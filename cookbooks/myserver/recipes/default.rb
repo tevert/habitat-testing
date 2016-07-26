@@ -23,3 +23,27 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
+
+hab_install
+
+package_path='/tmp/helloworld.hart'
+cookbook_file package_path do
+  source 'helloworld.hart'
+  notifies :install_package, "hab_package[#{package_path}]"
+end
+
+hab_package package_path do
+  notifies :restart, 'service[habitat-helloworld]'
+end
+
+cookbook_file '/etc/init.d/habitat-helloworld' do
+  source 'habitat-helloworld.sh'
+  owner 'root'
+  group 'root'
+  mode 00755
+end
+
+service 'habitat-helloworld' do
+  supports :status => true
+  action [ :enable, :start ]
+end
