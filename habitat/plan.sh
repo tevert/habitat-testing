@@ -10,6 +10,8 @@ pkg_bin_dirs=(bin)
 pkg_include_dirs=(include)
 pkg_lib_dirs=(lib)
 pkg_svc_run="bin/runService"
+pkg_svc_user="root"
+pkg_expose=(80)
 
 do_build() {
   echo "Compling Java code Main.java in $(pwd)"
