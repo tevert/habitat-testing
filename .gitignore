@@ -13,3 +13,5 @@ hs_err_pid*
 
 # Ignore Habitat output
 app/results/
+# Ignore Maven's output
+app/target/

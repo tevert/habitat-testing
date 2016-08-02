@@ -1,0 +1,9 @@
+[server]
+port = "80"
+redirect-port = "443"
+shutdown-port = "8081"
+
+[host]
+"localhost.unpack-wars" = true
+"localhost.auto-deploy" = true
+

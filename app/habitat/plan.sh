@@ -4,30 +4,32 @@ pkg_version=0.0.1
 pkg_maintainer="Tyler Evert <tyler.evert@centare.com>"
 pkg_license=(https://spdx.org/licenses/MIT.html)
 pkg_source=nosuch.tar.gz
-pkg_deps=(core/jdk8)
+pkg_deps=(core/jdk8 core/tomcat8)
 pkg_build_deps=(core/maven)
-pkg_bin_dirs=(bin)
-pkg_include_dirs=(include)
-pkg_lib_dirs=(lib)
-pkg_svc_run="bin/runService"
 pkg_svc_user="root"
-pkg_expose=(80)
+pkg_svc_run="tomcat/bin/catalina.sh run"
 
 do_build() {
-  echo "Compling Java code Main.java in $(pwd)"
-  #$(pkg_path_for jdk8)/bin/javac $PLAN_CONTEXT/../Main.java
-  javac $PLAN_CONTEXT/../Main.java
+  echo "Building!"
+  pushd $PLAN_CONTEXT/..
+  export JAVA_HOME=$(pkg_path_for jdk8)
+  mvn install
+  popd
+
+  return 0
 }
 
 do_install() {
-  mkdir -p $pkg_prefix/bin
-  mv $PLAN_CONTEXT/../*.class $pkg_prefix/bin
-  cat <<EOT >> $pkg_prefix/bin/runService
-#!/bin/sh
-cd $pkg_prefix/bin
-exec java Main 2>&1
-EOT
-  chmod +x $pkg_prefix/bin/runService
+  echo "Installing!"
+  pushd $pkg_prefix
+  mkdir lib
+  mkdir config
+  cp -a $PLAN_CONTEXT/../target/*.war lib
+  cp -a $PLAN_CONTEXT/../config/* config
+  cp -a $PLAN_CONTEXT/../default.toml .
+  popd
+
+  return 0
 }
 
 do_download() {

@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "Running init script..."
+tomcatDir="$(hab pkg path core/tomcat8)/tc"
+mySvcDir="{{pkg.svc_var_path}}"
+echo "Creating our Tomcat service at $mySvcDir"
+mkdir -p $mySvcDir
+cp -R $tomcatDir/* $mySvcDir
+
+echo "Installing our WAR"
+myPkgDir="$(hab pkg path centare/helloworld)"
+cp $myPkgDir/lib/helloworld.war $mySvcDir/webapps
+
+echo "Linking config files"
+for file in $(cd {{pkg.svc_config_path}}; ls -1)
+do
+  echo "Linking $file"
+  target="${file//_//}"
+  ln -vsf {{pkg.svc_config_path}}/$file {{pkg.svc_var_path}}/$target
+done
+
