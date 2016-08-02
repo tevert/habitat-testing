@@ -8,4 +8,4 @@ before_install:
   - cat centare.key | hab origin key import
 install:
   - cd $TRAVIS_BUILD_DIR/app
-  - sudo -E hab pkg build habitat -k centare
+  - sudo env "PATH=$PATH" hab pkg build habitat -k centare
