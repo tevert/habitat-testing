@@ -5,7 +5,7 @@ before_install:
   - export PATH=$PATH:$PWD/hab-0.8.0-20160708161531-x86_64-linux
   - cd app/habitat
   - openssl aes-256-cbc -K $encrypted_6b9147980d97_key -iv $encrypted_6b9147980d97_iv -in centare.key.enc -out centare.key -d
-  - cat centare.key | hab origin key import
+  - cat centare.key | sudo env "PATH=$PATH" hab origin key import
 install:
   - cd $TRAVIS_BUILD_DIR/app
   - sudo env "PATH=$PATH" hab pkg build habitat -k centare
