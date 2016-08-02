@@ -13,5 +13,7 @@ hs_err_pid*
 
 # Ignore Habitat output
 app/results/
+# Ignore Centare Habitat origin key
+app/habitat/centare.key
 # Ignore Maven's output
 app/target/
