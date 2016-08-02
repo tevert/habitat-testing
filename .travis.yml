@@ -1,0 +1,12 @@
+env:
+  global:
+    - "PATH=$PATH:$TRAVIS_BUILD_DIR/habitat-testing/hab-0.8.0-20160708161531-x86_64-linux"
+before_install:
+  - wget https://api.bintray.com/content/habitat/stable/linux/x86_64/hab-%24latest-x86_64-linux.tar.gz?bt_package=hab-x86_64-linux -O hab_download.tar.gz
+  - tar -xvf hab_download.tar.gz
+  - cd app/habitat
+  - openssl aes-256-cbc -K $encrypted_6b9147980d97_key -iv $encrypted_6b9147980d97_iv -in centare.key.enc -out centare.key -d
+  - cat centare.key | hab origin key import
+install:
+  - cd app
+  - hab pkg build habitat -k centare
