@@ -10,7 +10,7 @@ pkg_svc_user="root"
 pkg_svc_run="tomcat/bin/catalina.sh run"
 
 do_build() {
-  echo "Building!"
+  build_line "Building!"
   pushd $PLAN_CONTEXT/..
   export JAVA_HOME=$(pkg_path_for jdk8)
   mvn install
@@ -20,7 +20,7 @@ do_build() {
 }
 
 do_install() {
-  echo "Installing!"
+  build_line "Installing!"
   pushd $pkg_prefix
   mkdir lib
   mkdir config
