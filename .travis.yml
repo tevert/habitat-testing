@@ -7,6 +7,5 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_6b9147980d97_key -iv $encrypted_6b9147980d97_iv -in centare.key.enc -out centare.key -d
   - cat centare.key | hab origin key import
 install:
-  - echo $PATH
   - cd $TRAVIS_BUILD_DIR/app
-  - sudo hab pkg build habitat -k centare
+  - sudo -E hab pkg build habitat -k centare
