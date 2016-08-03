@@ -1,8 +1,11 @@
+language: java # Need to put this here, or travis tries to build with rake
 sudo: required
 before_install:
+  # Download habitat binary
   - wget https://api.bintray.com/content/habitat/stable/linux/x86_64/hab-0.8.0-20160708161531-x86_64-linux.tar.gz?bt_package=hab-x86_64-linux -O hab_download.tar.gz
   - tar -xvf hab_download.tar.gz
   - export PATH=$PATH:$PWD/hab-0.8.0-20160708161531-x86_64-linux
+  # Decrypt and import Centare's origin key
   - cd app/habitat
   - openssl aes-256-cbc -K $encrypted_6b9147980d97_key -iv $encrypted_6b9147980d97_iv -in centare.key.enc -out centare.key -d
   - cat centare.key | sudo env "PATH=$PATH" hab origin key import
