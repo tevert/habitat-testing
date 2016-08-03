@@ -1,26 +1,28 @@
-language: java # Need to put this here, or travis tries to build with rake. Silly Travis!
+language: java
 sudo: required
 before_install:
-  # Download habitat binary
-  - wget https://api.bintray.com/content/habitat/stable/linux/x86_64/hab-0.8.0-20160708161531-x86_64-linux.tar.gz?bt_package=hab-x86_64-linux -O hab_download.tar.gz
-  - tar -xvf hab_download.tar.gz
-  - export PATH=$PATH:$PWD/hab-0.8.0-20160708161531-x86_64-linux
-  # Decrypt and import Centare's origin key
-  - cd app/habitat
-  - openssl aes-256-cbc -K $encrypted_6b9147980d97_key -iv $encrypted_6b9147980d97_iv -in centare.key.enc -out centare.key -d
-  - cat centare.key | sudo env "PATH=$PATH" hab origin key import
+- wget https://api.bintray.com/content/habitat/stable/linux/x86_64/hab-0.8.0-20160708161531-x86_64-linux.tar.gz?bt_package=hab-x86_64-linux
+  -O hab_download.tar.gz
+- tar -xvf hab_download.tar.gz
+- export PATH=$PATH:$PWD/hab-0.8.0-20160708161531-x86_64-linux
+- cd app/habitat
+- openssl aes-256-cbc -K $encrypted_6b9147980d97_key -iv $encrypted_6b9147980d97_iv
+  -in centare.key.enc -out centare.key -d
+- cat centare.key | sudo env "PATH=$PATH" hab origin key import
 install:
-  - cd $TRAVIS_BUILD_DIR/app
-  - sudo env "PATH=$PATH" hab pkg build habitat -k centare
+- cd $TRAVIS_BUILD_DIR/app
+- sudo env "PATH=$PATH" hab pkg build habitat -k centare
 before_deploy:
   - sudo chmod +rw results
   - cp results/*.hart results/latest.hart
 deploy:
   provider: s3
-  access_key_id: "AKIAIWEY34FILJZCDHLQ"
-  bucket: "habitat-package-dump"
+  access_key_id: AKIAIWEY34FILJZCDHLQ
+  bucket: habitat-package-dump
   skip_cleanup: true
   acl: authenticated_read
   region: us-west-2
   local_dir: results
-  upload-dir: "centare/helloworld"
+  upload-dir: centare/helloworld
+  secret_access_key:
+    secure: cAwvM6s5PJ4WTg2BJLbPUHt/6A9/XjEXyzirSZDHK8HeQAIgaeMWX6MqhI/RwIEUXahMnHr+QMMKTQxvg1YsZxG9niktbbXvDXEMuj7XNLnYnDkfC36AYiV73zkQXywlHOiwfqXOnjY11RiMRJihY9HJZ/7VMt1bNN4pZSkuuzOxJfRmTTG1G2bRaPaCPrtG3Z/kuKK26jx7kk41zjdkBDrL4XNWdPJPxmacMb40q8Sk1zbiMeGwei2n0NP1GcRQw2YR/YCnH8SNWl/+9ECY6MplMZeQwOStmJIWdXWklXlQYgeade8jjDjZhMuiQuee1sBPlJFwee6fKPIGl/7c6GsEefHbtia91JfzuKZSy3HM9/c/qWjxCHhmt0XDgy9LAlVYE2dm1J+1YDQh8yz1dG8rruPlMN3W7zWcSorvlBnbMJG8ta+HTERIP4dKEfOzSrDVK25pEzGyaDBYIF2iU43RokW0kNVvVDd4Dj5CutK+rV9ARg5uZKh5wwHebswkeekRPJdHX/beW8q1FDkNdxbGEFBVdlO/dq4EHqiDGUjmbZVSsGB3jkA3NhaopIMeJ9EM1zB7mreipGu4X6LFUZ8gkaJ00AJQ68RsPkcemEiCYnhmknFUeBJUB4GgVDZe9+4PdtkK4sIycgYYOeN2T5yUDyUMHe25cMcZPxvB+l8=
