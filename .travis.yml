@@ -1,4 +1,4 @@
-language: java # Need to put this here, or travis tries to build with rake
+language: java # Need to put this here, or travis tries to build with rake. Silly Travis!
 sudo: required
 before_install:
   # Download habitat binary
@@ -12,3 +12,14 @@ before_install:
 install:
   - cd $TRAVIS_BUILD_DIR/app
   - sudo env "PATH=$PATH" hab pkg build habitat -k centare
+before_deploy:
+  - cp results/*.hart results/latest.hart
+deploy:
+  provider: s3
+  access_key_id: "AKIAIWEY34FILJZCDHLQ"
+  bucket: "habitat-package-dump"
+  skip_cleanup: true
+  acl: authenticated_read
+  region: us-west-2
+  local_dir: results
+  upload-dir: "centare/helloworld"
