@@ -13,6 +13,7 @@ install:
   - cd $TRAVIS_BUILD_DIR/app
   - sudo env "PATH=$PATH" hab pkg build habitat -k centare
 before_deploy:
+  - sudo chmod +rw results
   - cp results/*.hart results/latest.hart
 deploy:
   provider: s3
