@@ -27,8 +27,12 @@
 hab_install
 
 package_path='/tmp/helloworld.hart'
-cookbook_file package_path do
-  source 'helloworld.hart'
+s3_file package_path do
+  s3_url 'https://s3-us-west-2.amazonaws.com/'
+  bucket 'habitat-package-dump'
+  remote_path 'centare/helloworld/latest.hart'
+  aws_access_key_id 'AKIAJDVTVP5TJ5XTMP7A'
+  aws_secret_access_key data_bag_item('habitat-secrets', 'aws-keys', IO.read('/var/local/chef_databag.key'))['AKIAJDVTVP5TJ5XTMP7A']
   notifies :install_package, "hab_package[#{package_path}]"
 end
 

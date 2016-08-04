@@ -8,3 +8,4 @@ version          '0.0.2'
 supports         'ubuntu', '>= 12.04'
 
 depends 'habitat', '~> 0.0.3'
+depends 's3_file', '~> 2.7.0'
