@@ -15,7 +15,9 @@ install:
 before_deploy:
   - ls -lta results
   - sudo chmod +t results
+  - ls -lta results
   - cp -f results/*.hart results/latest.hart
+  - ls -lta results
 deploy:
   provider: s3
   access_key_id: AKIAIWEY34FILJZCDHLQ
