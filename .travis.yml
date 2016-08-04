@@ -14,7 +14,7 @@ install:
 - sudo env "PATH=$PATH" hab pkg build habitat -k centare
 before_deploy:
   - ls -lta results
-  - sudo chmod +t results
+  - sudo chmod o+wt results
   - ls -lta results
   - cp -f results/*.hart results/latest.hart
   - ls -lta results
