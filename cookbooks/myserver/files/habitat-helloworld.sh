@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Adapted from https://gist.github.com/naholyr/4275302
 ### BEGIN INIT INFO
 # Provides:          habitat-helloworld
@@ -9,11 +9,11 @@
 # Description:       helloworld running in Habitat
 ### END INIT INFO
 
-SCRIPT=hab start centare/helloworld
-RUNAS=root
+SCRIPT="hab start centare/helloworld"
+RUNAS="root"
 
-PIDFILE=/var/run/habitat-helloworld.pid
-LOGFILE=/var/log/habitat-helloworld.log
+PIDFILE="/var/run/habitat-helloworld.pid"
+LOGFILE="/var/log/habitat-helloworld.log"
 
 start() {
   if [ -f /var/run/$PIDNAME ] && kill -0 $(cat /var/run/$PIDNAME); then

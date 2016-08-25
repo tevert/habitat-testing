@@ -24,20 +24,21 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-hab_install
+hab_install 'this name is required for some reason'
 
 package_path='/tmp/helloworld.hart'
 s3_file package_path do
-  s3_url 'https://s3-us-west-2.amazonaws.com/'
   bucket 'habitat-package-dump'
   remote_path 'centare/helloworld/latest.hart'
   aws_access_key_id 'AKIAJDVTVP5TJ5XTMP7A'
   aws_secret_access_key data_bag_item('habitat-secrets', 'aws-keys', IO.read('/var/local/chef_databag.key'))['AKIAJDVTVP5TJ5XTMP7A']
-  notifies :install_package, "hab_package[#{package_path}]"
+  notifies :run, "execute[Install #{package_path}]"
 end
 
-hab_package package_path do
-  notifies :restart, 'service[habitat-helloworld]'
+execute "Install #{package_path}" do
+  command "sudo hab pkg install #{package_path}"
+  creates '/hab/pkgs/centare/helloworld'
+  notifies :restart, 'service[habitat-helloworld]', :delayed
 end
 
 cookbook_file '/etc/init.d/habitat-helloworld' do
